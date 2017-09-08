@@ -1,4 +1,24 @@
-(hid_layer)
+from __future__ import division
+from __future__ import print_function
+import numpy as np
+
+import nn_layer
+import activation
+
+
+class NNetwork(object):
+    def __init__(self):
+        self.input_layer = None
+        self.output_layer = None
+        self.hidden_layers = []
+        return
+
+    def set_input(self, input_layer):
+        self.input_layer = input_layer
+        return
+
+    def add_hidden_layer(self, hid_layer):
+        self.hidden_layers.append(hid_layer)
         return
 
     def set_output(self, output_layer):
