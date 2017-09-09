@@ -3,3 +3,4 @@
 /data/
 !/data/get.sh
 !/data/test.py
+*.pyc
