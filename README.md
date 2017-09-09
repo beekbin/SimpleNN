@@ -1,6 +1,7 @@
 # SimpleNN
 A simple Neural Network is able to achieve 98.11% correct rate on MNIST dataset. It is simple because it has not covoluational layer, nor RNN layer. 
-Even thought this number is very easy to be achieved with current machine learning frameworks, it is still valuable for me to have a deeper experience about the adjusting parameter skills.
+
+Even though the network is simple, and the number is not impressive at all, it is still valuable after learning the optimization skills by [reading](https://arxiv.org/abs/1206.5533) and [learning](https://www.coursera.org/learn/neural-networks/home/welcome).
 
 
 
