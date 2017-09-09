@@ -12,6 +12,22 @@ def myrandom_vector(d1):
     return np.random.randn(d1)
 
 
+# init the weight with strategy
+#  https://stats.stackexchange.com/questions/204114/deep-neural-network-weight-initialization?rq=1
+#  https://arxiv.org/abs/1206.5533  Practical Recommendations for Gradient-Based Training of Deep Architectures
+def sigmoid_init_weights(d1, d2):
+    num = d1 * d2
+    r = math.sqrt(6.0/num)
+    tmp = np.random.uniform(-r, r, num)
+    return tmp.reshape((d1, d2))
+
+
+def tanh_init_weights(d1, d2):
+    tmp = sigmoid_init_weights(d1, d2)
+    tmp *= 4.0
+    return tmp
+
+
 def calc_softmax(z):
     tmp = np.exp(z)
     total = sum(tmp)
@@ -91,7 +107,7 @@ class ActiveLayer(Layer):
 
     def init(self):
         fan_in = self.input_layer.get_size()
-        self.weights = myrandom_array2d(fan_in, self.size)
+        self.weights = sigmoid_init_weights(fan_in, self.size)
         self.bias = myrandom_vector(self.size)
 
         # forward results
@@ -178,6 +194,13 @@ class HiddenLayer(ActiveLayer):
     def __init__(self, name, size, activefunc):
         super(HiddenLayer, self).__init__(name, size)
         self.func = activefunc
+        return
+
+    def init(self):
+        super(HiddenLayer, self).init()
+        if self.func.get_name() == "tanh":
+            self.weights *= 4
+
         return
 
     def active(self):
