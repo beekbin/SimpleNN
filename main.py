@@ -97,6 +97,28 @@ def train_it(nn, train_data, lr):
     return
 
 
+def evaluate_it(nn, test_data, prefix):
+    labels = test_data[0]
+    imgs = test_data[1]
+    num = labels.shape[0]
+
+    total_correct = 0
+    total_cost = 0
+
+    for i in range(num):
+        label = labels[i, :]
+        img = imgs[i, :]
+        correct, cost = nn.evaluate(img, label)
+        total_correct += correct
+        total_cost += cost
+
+    accuracy = float(total_correct) / num
+    avg_cost = total_cost/num
+
+    print("[%s][%s] accuracy=%.4f, avg_cost=%.4f" % (str(datetime.now()), prefix, accuracy, avg_cost))
+    return
+
+
 def get_lr(step, current_lr):
     lrs = {0: 0.005, 4: 0.003, 6: 0.002, 8: 0.001, 15: 0.0005}
     if step in lrs:
@@ -118,6 +140,8 @@ def train_nn(data_dir):
         lr = get_lr(i, lr)
         print("[%s] begin epo-%s, lr=%.6f" % (str(datetime.now()), i, lr))
         train_it(nn, train_data, lr)
+        evaluate_it(nn, train_data, "train")
+        evaluate_it(nn, test_data, "test")
         print("[%s] end epo-%s" % (str(datetime.now()), i))
 
     return

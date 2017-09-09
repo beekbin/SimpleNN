@@ -1,5 +1,6 @@
 from __future__ import division
 from __future__ import print_function
+import numpy as np
 
 
 class NNetwork(object):
@@ -113,4 +114,17 @@ class NNetwork(object):
 
         msg += ("%s\n" % (self.output_layer.detail_info()))
         return msg
+
+    def evaluate(self, x, y):
+        self.forward(x)
+        cost = self.output_layer.calc_cost(y)
+
+        yy = self.output_layer.get_output()
+
+        i = np.argmax(y)
+        ii = np.argmax(yy)
+
+        if i == ii:
+            return 1, cost
+        return 0, cost
 
