@@ -14,8 +14,6 @@ Before doing data normalization, I can hardly achieve 70% correctness(cost was a
 ```python
 def normalize_img(imgs):
     result = imgs.astype(float)
-
-    # convert data from [0, 255] to [0, 1.0]
     result /= 255.0
     avg = np.average(result, axis=1).reshape((-1, 1))
     result -= avg
