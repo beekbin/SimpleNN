@@ -97,6 +97,7 @@ def train_it(nn, train_data, lr):
  # 2. download the mnist data
  cd data
  sh get.sh
+ cd ..
  
  # 3. run it
  python main.py
