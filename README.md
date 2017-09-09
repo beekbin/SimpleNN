@@ -82,3 +82,16 @@ def train_it(nn, train_data, lr):
 
     return
 ```
+
+# Run it
+### prerequisites
+    * Python 2.7+
+    * Numpy
+
+### run it
+ ```console
+ gitclone https://github.com/beekbin/SimpleNN.git
+ cd SimpleNN
+ python main.py
+ ```
+
