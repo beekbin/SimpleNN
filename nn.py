@@ -5,6 +5,8 @@ import numpy as np
 import nn_layer
 import activation
 
+"""simple nerual network"""
+
 
 class NNetwork(object):
     def __init__(self):
