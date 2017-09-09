@@ -1,3 +1,4 @@
+
 from __future__ import division
 from __future__ import print_function
 import numpy as np
@@ -39,3 +40,33 @@ class TanhActiveFunction(ActiveFunction):
 
     def backward(self, y):
         return 1 - y*y
+
+
+class ReluActiveFunction(ActiveFunction):
+    def __init__(self):
+        super(self.__class__, self).__init__("relu")
+        return
+
+    def forward(self, x):
+        return np.maximum(x, 0)
+
+    def backward(self, y):
+        return 1
+
+
+class LinearActiveFunction(ActiveFunction):
+    def __init__(self):
+        super(self.__class__, self).__init__("linear")
+        return
+
+    def forward(self, x):
+        return x
+
+    def backward(self, y):
+        return 1
+
+
+tanhFunc = TanhActiveFunction()
+sigmoidFunc = SigmoidActiveFunction()
+reluFunc = ReluActiveFunction()
+linearFunc = LinearActiveFunction()
