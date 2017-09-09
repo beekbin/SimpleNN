@@ -90,8 +90,15 @@ def train_it(nn, train_data, lr):
 
 ### run it
  ```console
- gitclone https://github.com/beekbin/SimpleNN.git
+ # 1. get code
+ git clone https://github.com/beekbin/SimpleNN.git
  cd SimpleNN
+ 
+ # 2. download the mnist data
+ cd data
+ sh get.sh
+ 
+ # 3. run it
  python main.py
  ```
 
