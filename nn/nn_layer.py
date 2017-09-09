@@ -1,4 +1,11 @@
-p.random.randn(d1, d2)
+from __future__ import print_function
+from __future__ import division
+import numpy as np
+import math
+
+
+def myrandom_array2d(d1, d2):
+    return np.random.randn(d1, d2)
 
 
 def myrandom_vector(d1):
@@ -87,7 +94,7 @@ class ActiveLayer(Layer):
 
         # backward results
         self.sigma = np.zeros(self.size)
-        self.delta_weights = np.zeros(self.fan_in, self.size)
+        self.delta_weights = np.zeros((fan_in, self.size))
         return
 
     def active(self):
@@ -98,6 +105,9 @@ class ActiveLayer(Layer):
 
     def get_sigma(self):
         return self.sigma
+
+    def get_weights(self):
+        return self.weights
 
     def update_weights(self, lr):
         self.weights -= lr * self.delta_weights
@@ -110,20 +120,31 @@ class SoftmaxOutputLayer(ActiveLayer):
         super(SoftmaxOutputLayer, self).__init__(name, size)
         return
 
+    def init(self):
+        """do nothing"""
+        return
+
     def active(self):
         x = self.input_layer.get_output()
-        np.dot(x, self.weights, out=self.z)
-        self.z += self.bias
-
-        # TODO: pass self.output into the function
-        self.output = calc_softmax(self.z)
+        self.output = calc_softmax(x)
         return
 
     def calc_error(self, labels):
         self.sigma = self.output - labels
+        return
 
-        x = self.input_layer.get_output()
-        np.dot(x.reshape((-1, 1)), self.sigma.reshape((1, -1)), out=self.delta_weights)
+    def calc_cost(self, labels):
+        i = np.argmax(labels)
+        y = self.output[i]
+        if y < 0.00000001:
+            return 10000000
+        elif y > 0.999:
+            return 0
+
+        return -1*math.log(y)
+
+    def update_weights(self, lr):
+        """do nothing"""
         return
 
 
@@ -139,15 +160,33 @@ class HiddenLayer(ActiveLayer):
         self.z += self.bias
 
         self.output = self.func.forward(self.z)
+        #if check_toobig(self.output):
+        #    print("%s too big" % (self.name,))
         return
 
     def calc_error(self):
         # 1. calc sigma
         next_sigma = self.next_layer.get_sigma()
-        np.dot(self.weights, next_sigma, out=self.sigma)
-        self.sigma = self.sigma * self.func.backward(self.z)
+        next_weights = self.next_layer.get_weights()
+
+        if next_weights is None:
+            self.sigma = np.copy(next_sigma)
+        else:
+            #print("weight.shape=%s, next=%s, my=%s" % (next_weights.shape, next_sigma.shape, self.sigma.shape))
+            np.dot(next_weights, next_sigma, out=self.sigma)
+        self.sigma = self.sigma * self.func.backward(self.output)
 
         # 2. calc delta_weights
         x = self.input_layer.get_output()
         self.delta_weights = np.dot(x.reshape((-1, 1)), self.sigma.reshape((1, -1)))
+        #print("name=%s, delta_weight=%s" % (self.name, self.delta_weights.shape))
         return
+
+
+def check_toobig(y):
+    for i in range(y.shape[0]):
+        z = y[i]
+        if z*z > 10000:
+            print("z=%s" % (z, ))
+            return True
+    return False

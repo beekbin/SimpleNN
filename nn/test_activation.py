@@ -1,3 +1,4 @@
+
 from __future__ import print_function, division
 import numpy as np
 
@@ -45,4 +46,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main(
+    main()
