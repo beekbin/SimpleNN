@@ -1,15 +1,15 @@
 # SimpleNN
-A simple Neural Network is able to achieve 98.11% correct rate on MNIST dataset. It is simple because it has not covoluational layer, nor RNN layer. 
+A simple Neural Network is able to achieve 98% correct rate on MNIST dataset. It is simple because it has not covoluational layer, nor RNN layer. 
 
 Even though the network is simple, and the number is not impressive at all, it is still interesting to apply the commonly mentioned optimization skills to practice.
 
 
-# Achieve 98.11% correctness
-Here is to describe how to use this simple nerual network to achieve 98.11% correctness.
+# Achieve 98% correctness
+Here is to describe how to use this simple nerual network to achieve 98% correctness.
 
 ## data normalization
 This is the most important adjustment after I finished the code.
-Before doing data normalization, I can hardly achieve 70% correctness(cost was around 0.70) on the MNIST dataset. After a very simple normalization is applied to the input data, 95% correctness is achieved immediately.
+Before doing data normalization, I can hardly achieve 70% correctness(cost was around 0.70) on the MNIST dataset. After a very simple normalization is applied to the input data, 95% correctness is achieved immediately in the first epoch.
 ```python
 def normalize_img(imgs):
     result = imgs.astype(float)

@@ -12,7 +12,7 @@ def myrandom_vector(d1):
     return np.random.randn(d1)
 
 
-# init the weight with strategy
+# init the weight with care
 #  https://stats.stackexchange.com/questions/204114/deep-neural-network-weight-initialization?rq=1
 #  https://arxiv.org/abs/1206.5533  Practical Recommendations for Gradient-Based Training of Deep Architectures
 def sigmoid_init_weights(d1, d2):
@@ -164,12 +164,14 @@ class SoftmaxOutputLayer(ActiveLayer):
         return
 
     def init(self):
-        """do nothing"""
+        self.output = np.zeros(self.size)
         return
 
     def active(self):
         x = self.input_layer.get_output()
-        self.output = calc_softmax(x)
+        np.exp(x, out=self.output)
+        d = np.sum(self.output)
+        self.output /= d
         return
 
     def calc_error(self, labels):

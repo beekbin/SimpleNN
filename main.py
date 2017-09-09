@@ -79,7 +79,7 @@ def evaluate_it(nn, test_data, prefix):
 
 
 def get_lr(step, current_lr):
-    lrs = {0: 0.008, 1: 0.006, 4: 0.005, 5: 0.003, 6: 0.002, 8: 0.001, 15: 0.0005}
+    lrs = {0: 0.008, 1: 0.006, 4: 0.005, 5: 0.003, 6: 0.002, 8: 0.001, 10: 0.0005, 15: 0.0001}
     if step in lrs:
         return lrs[step]
     return current_lr
