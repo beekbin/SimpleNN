@@ -139,9 +139,10 @@ class ActiveLayer(Layer):
         return self.weights
 
     def update_weights(self, lr):
-        self.weights -= lr * self.delta_weights
         if self.lambda2 > 0:
-            self.weights -= (lr * self.lambda2 * self.weights)
+            self.delta_weights += (self.lambda2 * self.weights)
+
+        self.weights -= lr * self.delta_weights
         self.bias -= lr * self.delta_bias
 
         self.clear_delta()

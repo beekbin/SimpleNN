@@ -97,11 +97,11 @@ def train_nn(data_dir):
     lr = 0.005
     for i in range(100):
         lr = get_lr(i, lr)
-        print("[%s] begin epo-%s, lr=%.6f" % (str(datetime.now()), i, lr))
+        print("[%s] begin epoch-%s, lr=%.6f" % (str(datetime.now()), i, lr))
         train_it(nn, train_data, lr)
         evaluate_it(nn, train_data, "train")
         evaluate_it(nn, test_data, "test")
-        print("[%s] end epo-%s" % (str(datetime.now()), i))
+        print("[%s] end epoch-%s" % (str(datetime.now()), i))
 
     return
 
