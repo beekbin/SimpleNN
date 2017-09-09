@@ -7,9 +7,9 @@ import os
 import numpy as np
 from datetime import datetime
 
-import nn
-import nn_layer
-import activation
+from nn import nn_layer
+from nn import activation
+from nn import simple_nn
 
 
 def transform_label(label_1d, d2):
@@ -56,7 +56,7 @@ def construct_nn():
     output_layer = nn_layer.SoftmaxOutputLayer("mnist_output", 10)
 
     # 1. set input and output layers
-    nn = nn.NNetwork()
+    nn = simple_nn.NNetwork()
     nn.set_input(img_input)
     nn.set_output(output_layer)
 
