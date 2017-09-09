@@ -26,11 +26,16 @@ class Layer(object):
         self.output = None
         self.input_layer = None
         self.next_layer = None
+        self.lambda2 = 0
         return
 
     def init(self):
         """init the weight matrix"""
         pass
+
+    def set_lambda2(self, l2):
+        self.lambda2 = l2
+        return
 
     def set_input_layer(self, input_layer):
         self.input_layer = input_layer
@@ -54,7 +59,7 @@ class Layer(object):
         if self.input_layer is not None:
             fan_in = self.input_layer.get_size()
 
-        msg = "[%d, %d] %s" % (fan_in, self.size, self.name)
+        msg = "[%d, %d], l2=%.5f, %s" % (fan_in, self.size, self.lambda2, self.name)
         return msg
 
 
@@ -111,6 +116,8 @@ class ActiveLayer(Layer):
 
     def update_weights(self, lr):
         self.weights -= lr * self.delta_weights
+        if self.lambda2 > 0.0:
+            self.weights -= (lr * self.lambda2 * self.weights)
         self.bias -= lr * self.sigma
         return
 
