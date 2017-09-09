@@ -97,8 +97,15 @@ def train_it(nn, train_data, lr):
     return
 
 
+def get_lr(step, current_lr):
+    lrs = {0: 0.005, 4: 0.003, 6: 0.002, 8: 0.001, 15: 0.0005}
+    if step in lrs:
+        return lrs[step]
+    return current_lr
+
+
 def train_nn(data_dir):
-    l2 = 0.0001
+    l2 = 0
     nn = construct_nn(l2)
     train_data = load_data(data_dir, "train")
     test_data = load_data(data_dir, "test")
@@ -107,11 +114,9 @@ def train_nn(data_dir):
         return
 
     lr = 0.005
-    #train_it(nn, train_data, lr)
     for i in range(100):
-        print("[%s] begin epo-%s" % (str(datetime.now()), i))
-        if i > 5:
-            lr = 0.001
+        lr = get_lr(i, lr)
+        print("[%s] begin epo-%s, lr=%.6f" % (str(datetime.now()), i, lr))
         train_it(nn, train_data, lr)
         print("[%s] end epo-%s" % (str(datetime.now()), i))
 
@@ -119,7 +124,6 @@ def train_nn(data_dir):
 
 
 def main():
-    #construct_nn()
     train_nn("./data/")
     return
 

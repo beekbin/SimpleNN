@@ -84,8 +84,9 @@ class ActiveLayer(Layer):
         self.weights = None
         self.bias = None
         self.z = None
-        self.sigma = None
+        self.delta = None
         self.delta_weights = None
+        self.delta_bias = None
         return
 
     def init(self):
@@ -98,8 +99,15 @@ class ActiveLayer(Layer):
         self.output = np.zeros(self.size)
 
         # backward results
-        self.sigma = np.zeros(self.size)
+        self.delta = np.zeros(self.size)
         self.delta_weights = np.zeros((fan_in, self.size))
+        self.delta_bias = np.zeros(self.size)
+        return
+
+    def clear_delta(self):
+        self.delta.fill(0.0)
+        self.delta_weights.fill(0.0)
+        self.delta_bias.fill(0.0)
         return
 
     def active(self):
@@ -108,17 +116,28 @@ class ActiveLayer(Layer):
     def calc_error(self):
         pass
 
-    def get_sigma(self):
-        return self.sigma
+    def get_delta(self):
+        return self.delta
 
     def get_weights(self):
         return self.weights
 
     def update_weights(self, lr):
         self.weights -= lr * self.delta_weights
-        if self.lambda2 > 0.0:
+        if self.lambda2 > 0:
             self.weights -= (lr * self.lambda2 * self.weights)
-        self.bias -= lr * self.sigma
+        self.bias -= lr * self.delta_bias
+
+        self.clear_delta()
+        return
+
+    def update_weights_batch(self, lr, batch_size):
+        if batch_size > 1:
+            batch_size = float(batch_size)
+            self.delta_weights /= batch_size
+            self.delta_bias /= batch_size
+
+        self.update_weights(lr)
         return
 
 
@@ -137,7 +156,7 @@ class SoftmaxOutputLayer(ActiveLayer):
         return
 
     def calc_error(self, labels):
-        self.sigma = self.output - labels
+        self.delta = self.output - labels
         return
 
     def calc_cost(self, labels):
@@ -172,21 +191,20 @@ class HiddenLayer(ActiveLayer):
         return
 
     def calc_error(self):
-        # 1. calc sigma
-        next_sigma = self.next_layer.get_sigma()
+        # 1. calc delta
+        next_delta = self.next_layer.get_delta()
         next_weights = self.next_layer.get_weights()
 
         if next_weights is None:
-            self.sigma = np.copy(next_sigma)
+            np.copyto(self.delta, next_delta)
         else:
-            #print("weight.shape=%s, next=%s, my=%s" % (next_weights.shape, next_sigma.shape, self.sigma.shape))
-            np.dot(next_weights, next_sigma, out=self.sigma)
-        self.sigma = self.sigma * self.func.backward(self.output)
+            np.dot(next_weights, next_delta, out=self.delta)
+        self.delta *= self.func.backward(self.output)
 
         # 2. calc delta_weights
         x = self.input_layer.get_output()
-        self.delta_weights = np.dot(x.reshape((-1, 1)), self.sigma.reshape((1, -1)))
-        #print("name=%s, delta_weight=%s" % (self.name, self.delta_weights.shape))
+        self.delta_weights += np.dot(x.reshape((-1, 1)), self.delta.reshape((1, -1)))
+        self.delta_bias += self.delta
         return
 
 
