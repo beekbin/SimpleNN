@@ -62,8 +62,7 @@ With this nerual network (l2=0.0), and simple SGD (no mini-batch), 10 epochs ach
 
 ## data shuffling
 Because the naive SGD is used during the training, it is also important to shuffle the data during training.
-```
-
+```python
 def train_it(nn, train_data, lr):
     labels = train_data[0]
     imgs = train_data[1]
