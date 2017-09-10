@@ -38,6 +38,8 @@ class Layer(object):
     def __init__(self, name, size):
         self.name = name
         self.size = size
+        # activation function
+        self.func = None
         # the output of current layer, usually is a vector of the activated result
         self.output = None
         self.input_layer = None
@@ -75,7 +77,11 @@ class Layer(object):
         if self.input_layer is not None:
             fan_in = self.input_layer.get_size()
 
-        msg = "[%d, %d], l2=%.5f, %s" % (fan_in, self.size, self.lambda2, self.name)
+        if self.func is None:
+            funcName = "None"
+        else:
+            funcName = self.func.get_name()
+        msg = "[%d, %d],l2=%.5f, activation=[%s], %s" % (fan_in, self.size, self.lambda2, funcName, self.name)
         return msg
 
 
@@ -211,7 +217,7 @@ class HiddenLayer(ActiveLayer):
         np.dot(x, self.weights, out=self.z)
         self.z += self.bias
 
-        self.output = self.func.forward(self.z)
+        self.func.forward(self.z, out=self.output)
         #if check_toobig(self.output):
         #    print("%s too big" % (self.name,))
         return
@@ -225,7 +231,7 @@ class HiddenLayer(ActiveLayer):
             np.copyto(self.delta, next_delta)
         else:
             np.dot(next_weights, next_delta, out=self.delta)
-        self.delta *= self.func.backward(self.output)
+        self.delta *= self.func.backward(self.z, self.output)
 
         # 2. calc delta_weights
         x = self.input_layer.get_output()
