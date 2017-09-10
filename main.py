@@ -50,7 +50,7 @@ def construct_big_nn(l2=0.0005):
     nn.set_output(output_layer)
 
     # 2. add some hidden layers
-    h1 = nn_layer.HiddenLayer("h1", 500, activation.tanhFunc)
+    h1 = nn_layer.HiddenLayer("h1", 512, activation.tanhFunc)
     h1.set_lambda2(l2)
     nn.add_hidden_layer(h1)
 
@@ -58,7 +58,7 @@ def construct_big_nn(l2=0.0005):
     h2.set_lambda2(l2)
     nn.add_hidden_layer(h2)
 
-    h3 = nn_layer.HiddenLayer("h3", 10, activation.reluFunc)
+    h3 = nn_layer.HiddenLayer("h3", 10, activation.leakyReluFunc)
     h3.set_lambda2(l2)
     nn.add_hidden_layer(h3)
 
@@ -115,9 +115,9 @@ def get_lr(step, current_lr):
 
 
 def train_nn(data_dir):
-    l2 = 1e-3
-    #nn = construct_nn(l2)
-    nn = construct_big_nn(l2)
+    nn = construct_nn()
+    # l2 = 1e-3
+    # nn = construct_big_nn(l2)
     train_data = mnist.load_data(data_dir, "train")
     test_data = mnist.load_data(data_dir, "test")
     if (train_data is None) or (test_data is None):
