@@ -1,23 +1,13 @@
-# SimpleNN
-A simple Neural Network is able to achieve 98% correct rate on MNIST dataset. It is simple because it has not covoluational layer, nor RNN layer. 
+# SimpleNN: a simple neural network framework
+This project builds a simple neural network framework based on python and Numpy.
 
-Even though the network is simple, and the number is not impressive at all, it is still interesting to apply the commonly mentioned optimization skills to practice.
+With this framework, a simple 5-layers neural network is built. The [main.py](https://github.com/beekbin/SimpleNN/blob/master/main.py) file demonstrates how to use the simple framework to build the NN, and how to train the NN with `MNIST` dataset. (`CNN` version can be found in another [project](https://github.com/beekbin/simpleCNN).)
 
 
-# Achieve 98% correctness
-Here is to describe how to use this simple nerual network to achieve 98% correctness.
+# Achieve 98% correctness on MNIST
+Here is to describe how to use this simple framework to build a neural network, and how to train it on `MNIST` dataset to achieve 98% correctness. 
 
-## data normalization
-This is the most important adjustment after I finished the code.
-Before doing data normalization, I can hardly achieve 70% correctness(cost was around 0.70) on the MNIST dataset. After a very simple normalization is applied to the input data, 95% correctness is achieved immediately in the first epoch.
-```python
-def normalize_img(imgs):
-    result = imgs.astype(float)
-    result /= 255.0
-    avg = np.average(result, axis=1).reshape((-1, 1))
-    result -= avg
-    return result
-```
+Even though the network is simple, and the number is not [impressive at all](mnist), it is still interesting to apply the commonly mentioned optimization skills to practice.
 
 
 ## Nerual Network structure
@@ -58,6 +48,18 @@ With this nerual network (l2=0.0), and simple SGD (no mini-batch), 10 epochs ach
 ```console
 [train] accuracy=0.9972, avg_cost=0.0148
 [test] accuracy=0.9811, avg_cost=0.0656
+```
+
+## data normalization
+This is the most important adjustment after I finished the code.
+Before doing data normalization, I can hardly achieve 70% correctness(cost was around 0.70) on the MNIST dataset. After a very simple normalization is applied to the input data, 95% correctness is achieved immediately in the first epoch.
+```python
+def normalize_img(imgs):
+    result = imgs.astype(float)
+    result /= 255.0
+    avg = np.average(result, axis=1).reshape((-1, 1))
+    result -= avg
+    return result
 ```
 
 ## data shuffling
