@@ -7,7 +7,7 @@ With this framework, a simple 5-layers neural network is built. The [main.py](ht
 # Achieve 98% correctness on MNIST
 Here is to describe how to use this simple framework to build a neural network, and how to train it on `MNIST` dataset to achieve 98% correctness. 
 
-Even though the network is simple, and the number is not [impressive at all](mnist), it is still interesting to apply the commonly mentioned optimization skills to practice.
+Even though the network is simple, and the number is not [impressive at all](mnist), it is still interesting to practice the common optimization skills to train a neural network.
 
 
 ## Nerual Network structure
