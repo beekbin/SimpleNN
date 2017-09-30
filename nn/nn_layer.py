@@ -28,12 +28,6 @@ def tanh_init_weights(d1, d2):
     return tmp
 
 
-def calc_softmax(z):
-    tmp = np.exp(z)
-    total = sum(tmp)
-    return tmp/total
-
-
 class Layer(object):
     def __init__(self, name, size):
         self.name = name

@@ -1,6 +1,7 @@
 from __future__ import division
 from __future__ import print_function
 import numpy as np
+import logging
 
 
 class NNetwork(object):
@@ -9,6 +10,7 @@ class NNetwork(object):
         self.output_layer = None
         self.hidden_layers = []
         self.errors = []
+        self.info_intervals = 10000
         return
 
     def set_input(self, input_layer):
@@ -78,8 +80,8 @@ class NNetwork(object):
         for layer in reversed(self.hidden_layers):
             layer.calc_error()
 
-        if len(self.errors) == 10000:
-            print("cost=%.3f" % (sum(self.errors)/len(self.errors)))
+        if len(self.errors) == self.info_intervals:
+            logging.info("cost=%.3f" % (sum(self.errors)/len(self.errors)))
             self.errors = []
         self.errors.append(self.output_layer.calc_cost(labels))
         return

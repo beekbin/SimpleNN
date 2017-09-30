@@ -2,7 +2,9 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import absolute_import
 
-from datetime import datetime
+import sys
+import os
+import logging
 from random import shuffle
 
 from nn import nn_layer
@@ -34,9 +36,8 @@ def construct_nn(l2=0.0):
     nn.add_hidden_layer(h3)
 
     # 3. complete nn construction
-    #print("%s" % (nn))
     nn.connect_layers()
-    print(nn.get_detail())
+    logging.info("NN.info" + nn.get_detail())
     return nn
 
 
@@ -63,9 +64,8 @@ def construct_big_nn(l2=0.0005):
     nn.add_hidden_layer(h3)
 
     # 3. complete nn construction
-    #print("%s" % (nn))
     nn.connect_layers()
-    print(nn.get_detail())
+    logging.info("NN.info\n" + nn.get_detail())
     return nn
 
 
@@ -103,7 +103,7 @@ def evaluate_it(nn, test_data, prefix):
     accuracy = float(total_correct) / num
     avg_cost = total_cost/num
 
-    print("[%s][%s] accuracy=%.4f, avg_cost=%.4f" % (str(datetime.now()), prefix, accuracy, avg_cost))
+    logging.info("[%s] accuracy=%.4f, avg_cost=%.4f" % (prefix, accuracy, avg_cost))
     return
 
 
@@ -121,17 +121,19 @@ def train_nn(data_dir):
     train_data = mnist.load_data(data_dir, "train")
     test_data = mnist.load_data(data_dir, "test")
     if (train_data is None) or (test_data is None):
-        print("[ERROR] failed to load data")
+        msg = "[ERROR] failed to load data"
+        print(msg)
+        logging.error(msg)
         return
 
     lr = 0.005
     for i in range(100):
         lr = get_lr(i, lr)
-        print("[%s] begin epoch-%s, lr=%.6f" % (str(datetime.now()), i, lr))
+        logging.info("begin epoch-%s, lr=%.6f" % (i, lr))
         train_it(nn, train_data, lr)
         evaluate_it(nn, train_data, "train")
         evaluate_it(nn, test_data, "test")
-        print("[%s] end epoch-%s" % (str(datetime.now()), i))
+        logging.info("end epoch-%s" % (i,))
 
     return
 
@@ -141,5 +143,15 @@ def main():
     return
 
 
+def setup_log():
+    logfile = "./train.%s.log" % (os.getpid())
+    if len(sys.argv) > 1:
+        logfile = sys.argv[1]
+    print("logfile=%s" % (logfile,))
+    logging.basicConfig(filename=logfile, format='[%(asctime)s] %(message)s', level=logging.DEBUG)
+    return
+
+
 if __name__ == "__main__":
-    main()
+    setup_log()
+    sys.exit(main())
