@@ -1,16 +1,35 @@
 # SimpleNN: a simple neural network framework
 This project builds a simple neural network framework based on python and Numpy.
 
+### Three kinds of layers
+* Input Layer
+
+* Output Layer
+
+   a softmax output layer is provided.
+   
+* Hidden Layer
+   
+   Get input from previous layer, and forward activation to next layer.
+
+### Activations
+   [Several activation functions](https://github.com/beekbin/SimpleNN/blob/master/nn/activation.py) are provided, and can be plugged into the Hidden Layers.
+   
+### Simple Framework
+   With this [framework](https://github.com/beekbin/SimpleNN/blob/master/nn/simple_nn.py), different neural networks can be built with the Input/Output/Hidden Layers, and the Activate functions.
+   
+
+# A concrete example 
 With this framework, a simple 5-layers neural network is built. The [main.py](https://github.com/beekbin/SimpleNN/blob/master/main.py) file demonstrates how to use the simple framework to build the NN, and how to train the NN with `MNIST` dataset. (`CNN` version can be found in another [project](https://github.com/beekbin/simpleCNN).)
 
 
-# Achieve 98% correctness on MNIST
+## Achieve 98% correctness on MNIST
 Here is to describe how to use this simple framework to build a neural network, and how to train it on `MNIST` dataset to achieve 98% correctness. 
 
 Even though the network is simple, and the number is not [impressive at all](mnist), it is still interesting to practice the common optimization skills to train a neural network.
 
 
-## Nerual Network structure
+### define the nerual network structure
 This neural network has three hidden layers, and a softmax output layer.
 The first two hidden layers uses __tanh__ activation function, the third hidden layer uses the __Relu__ activation function.
 The derivative of __Relu__ function is 1, so it can transmit the errors from output to previous layers with less loss.
@@ -50,7 +69,7 @@ With this nerual network (l2=0.0), and simple SGD (no mini-batch), 10 epochs ach
 [test] accuracy=0.9811, avg_cost=0.0656
 ```
 
-## data normalization
+### data normalization
 This is the most important adjustment after I finished the code.
 Before doing data normalization, I can hardly achieve 70% correctness(cost was around 0.70) on the MNIST dataset. After a very simple normalization is applied to the input data, 95% correctness is achieved immediately in the first epoch.
 ```python
@@ -62,7 +81,7 @@ def normalize_img(imgs):
     return result
 ```
 
-## data shuffling
+### data shuffling
 Because the naive SGD is used during the training, it is also important to shuffle the data during training.
 ```python
 def train_it(nn, train_data, lr):
@@ -81,7 +100,7 @@ def train_it(nn, train_data, lr):
     return
 ```
 
-# Run it
+## Run it
 ### prerequisites
     * Python 2.7+
     * Numpy
@@ -107,29 +126,29 @@ def train_it(nn, train_data, lr):
 
 Only fully connected layers are supported in current implementation.
 
-* Convolutional + Pooling Layers
+* **Convolutional + Pooling Layers**
 
 This is implemented in [another project](https://github.com/beekbin/simpleCNN).
     
-* Embedding Layer
+* **Embedding Layer**
 
 This is important for NLP problems. 
    
-* Recurrent Layers
+* **Recurrent Layers**
 
 such as vanilla RNN, LSTM, GRU.   
 
 ### 2. Improve generalization
-* Dropout
+* **Dropout**
 
 ### 3. Accelerate training process
 
-* Adaptive learning rate schedulers
+* **Adaptive learning rate schedulers**
 
   Here is a wonderful review of the popular [learning rate schdulers](http://ruder.io/optimizing-gradient-descent/),
   It will be nice to implement some of them.
   
-* BatchNorm
+* **BatchNorm**
    
 
 ### 4. More flexible layers: allow multiple inputs
