@@ -107,28 +107,29 @@ def train_it(nn, train_data, lr):
 
 Only fully connected layers are supported in current implementation.
 
-**Convolutional + Pooling Layers**
+* Convolutional + Pooling Layers
 
 This is implemented in [another project](https://github.com/beekbin/simpleCNN).
     
-**Embedding Layer**
+* Embedding Layer
 
 This is important for NLP problems. 
    
-**Recurrent Layers**
+* Recurrent Layers
 
 such as vanilla RNN, LSTM, GRU.   
 
 ### 2. Improve generalization
-**Dropout**
+* Dropout
 
 ### 3. Accelerate training process
-**BatchNorm**
 
-**Adaptive learning rate schedulers**
+* Adaptive learning rate schedulers
 
-   Here is a wonderful review of the popular [learning rate schdulers](http://ruder.io/optimizing-gradient-descent/),
-   I'd like to try some of them.
+  Here is a wonderful review of the popular [learning rate schdulers](http://ruder.io/optimizing-gradient-descent/),
+  It will be nice to implement some of them.
+  
+* BatchNorm
    
 
 ### 4. More flexible layers: allow multiple inputs
