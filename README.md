@@ -103,7 +103,7 @@ def train_it(nn, train_data, lr):
 
 # TODO
 
-## 1.Add more kinds of layers
+### 1. Add more kinds of layers
 Only fully connected layers are supported in current implementation.
 
 **Convolutional + Pooling Layers**
@@ -116,10 +116,10 @@ Only fully connected layers are supported in current implementation.
 **Recurrent Layers**
    such as vanilla RNN, LSTM, GRU.   
 
-## 2. Improve generalization
+### 2. Improve generalization
 **Dropout**
 
-## 3. Accelerate training process
+### 3. Accelerate training process
 **BatchNorm**
 
 **Adaptive learning rate schedulers**
@@ -128,7 +128,7 @@ Only fully connected layers are supported in current implementation.
    I'd like to try some of them.
    
 
-## 4. More flexible layers: allow multiple inputs
+### 4. More flexible layers: allow multiple inputs
 
  In current implementation, one layer can only have one input layer. However, many modern deep learning networks requries 
  multiple inputs, such as [ResNet](https://arxiv.org/abs/1512.03385)/[HighwayNet](https://arxiv.org/abs/1505.00387)/[DenseCNN](https://arxiv.org/abs/1608.06993).  And in one of my project, we found that even Densely connected LSTM layers are also powerful.
