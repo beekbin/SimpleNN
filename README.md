@@ -104,17 +104,20 @@ def train_it(nn, train_data, lr):
 # TODO
 
 ### 1. Add more kinds of layers
+
 Only fully connected layers are supported in current implementation.
 
 **Convolutional + Pooling Layers**
 
-    This is implemented in [another project](https://github.com/beekbin/simpleCNN).
+This is implemented in [another project](https://github.com/beekbin/simpleCNN).
     
 **Embedding Layer**
-   This is important for NLP problems. 
+
+This is important for NLP problems. 
    
 **Recurrent Layers**
-   such as vanilla RNN, LSTM, GRU.   
+
+such as vanilla RNN, LSTM, GRU.   
 
 ### 2. Improve generalization
 **Dropout**
