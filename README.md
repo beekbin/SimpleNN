@@ -1,23 +1,22 @@
 # SimpleNN: a simple neural network framework
-This project builds a simple neural network framework based on python and Numpy.
+This project builds a simple neural network framework based on python and Numpy. It has three components:
+* **Layers**
 
-### Three kinds of layers
-* Input Layer
+  It has three kinds of layers, and trained with BackPropagation algorithm.
+  ```
+  Input Layer: feed data to the neural network;
+  Output Layer: generate predictions, a softmax output layer is provided;
+  Hidden Layer: lies in between Input layer and Output layer;
+  ```
+  
+* **Activations**
+ 
+  [Several activation functions](https://github.com/beekbin/SimpleNN/blob/master/nn/activation.py) are provided, and can be plugged into the Hidden Layers.
+  
+* **Simple Framework**
+    
+    With this [framework](https://github.com/beekbin/SimpleNN/blob/master/nn/simple_nn.py), different neural networks can be built with the Input/Output/Hidden Layers, and the Activate functions.
 
-* Output Layer
-
-   a softmax output layer is provided.
-   
-* Hidden Layer
-   
-   Get input from previous layer, and forward activation to next layer.
-
-### Activations
-   [Several activation functions](https://github.com/beekbin/SimpleNN/blob/master/nn/activation.py) are provided, and can be plugged into the Hidden Layers.
-   
-### Simple Framework
-   With this [framework](https://github.com/beekbin/SimpleNN/blob/master/nn/simple_nn.py), different neural networks can be built with the Input/Output/Hidden Layers, and the Activate functions.
-   
 
 # A concrete example 
 With this framework, a simple 5-layers neural network is built. The [main.py](https://github.com/beekbin/SimpleNN/blob/master/main.py) file demonstrates how to use the simple framework to build the NN, and how to train the NN with `MNIST` dataset. (`CNN` version can be found in another [project](https://github.com/beekbin/simpleCNN).)
