@@ -36,6 +36,7 @@ class EmbeddingLayer(Layer):
         if indata > self.num:
             logging.error("EmbeddingLayer[%s] out of index [%s Vs. %s]." % (self.name, indata, self.num))
             return
+
         self.word_index = indata
         self.output = self.weights[indata]
         return

@@ -4,7 +4,6 @@ import numpy as np
 import sys
 import random
 import logging
-import os
 
 sys.path.insert(0, "../")
 from nn.embedding_layer import EmbeddingLayer
@@ -27,11 +26,13 @@ class FakeOutputLayer(ActiveLayer):
         return
 
     def calc_error(self, labels):
-        self.delta = labels - self.output
+        # print("[30] labels=%s\noutput=%s\n" % (labels, self.output))
+        self.delta = self.output - labels
         return
 
     def calc_cost(self, labels):
         cost = np.sum(np.absolute(self.delta))
+        # print("[36] cost = %s" % cost)
         return cost
 
 
@@ -42,21 +43,36 @@ def get_random_vectors(m, n):
     return result
 
 
-def train_it(nn, y, m):
-    data = []
-    for i in range(100):
-        x = random.randint(0, m-1)
-        data.append(x)
-
+def train_it(nn, y, data):
+    random.shuffle(data)
     lr = 0.001
     for x in data:
         nn.train(x, y[x], lr)
     return
 
 
+def evaluate_it(nn, y, data, prefix):
+    total_cost = 0.0
+
+    for x in data:
+        _, cost = nn.evaluate(x, y[x])
+        total_cost += cost
+
+    logging.info("[%s] cost=%.3f" % (prefix, total_cost))
+    return
+
+
+def get_train_data(m):
+    data = []
+    for i in range(20 * m):
+        x = i % m
+        data.append(x)
+    return data
+
+
 def test1():
     m = 3
-    n = 4
+    n = 5
     y = get_random_vectors(m, n)
 
     nn = NNetwork()
@@ -68,10 +84,16 @@ def test1():
     nn.set_output(myout)
     nn.add_hidden_layer(emb)
     nn.connect_layers()
-    nn.set_log_interval(100)
+    nn.set_log_interval(1000)
 
-    for i in range(1000):
-        train_it(nn, y, m)
+    print(emb.weights)
+    print("*"*40)
+
+    data = get_train_data(m)
+    for i in range(500):
+        train_it(nn, y, data)
+        if i % 10 == 0:
+            evaluate_it(nn, y, data, "epoch-%s" % i)
 
     print(y)
     print("*"*40)
@@ -85,13 +107,11 @@ def main():
 
 
 def setup_log():
-    logfile = "./test.emb.%s.log" % (os.getpid())
-    if len(sys.argv) > 1:
-        logfile = sys.argv[1]
-    print("logfile=%s" % (logfile,))
-    logging.basicConfig(filename=logfile, format='[%(asctime)s] %(message)s', level=logging.DEBUG)
+    # logging.basicConfig(filename=logfile, format='[%(asctime)s] %(message)s', level=logging.DEBUG)
+    logging.basicConfig(stream=sys.stdout, format='[%(asctime)s] %(message)s', level=logging.DEBUG)
     return
 
 
 if __name__ == "__main__":
+    setup_log()
     sys.exit(main())
