@@ -28,6 +28,12 @@ def tanh_init_weights(d1, d2):
     return tmp
 
 
+def calc_softmax(z):
+    tmp = np.exp(z)
+    total = sum(tmp)
+    return tmp/total
+
+
 class Layer(object):
     def __init__(self, name, size):
         self.name = name
@@ -179,12 +185,16 @@ class SoftmaxOutputLayer(ActiveLayer):
         self.delta = self.output - labels
         return
 
+    def calc_input_delta(self, delta):
+        np.copyto(delta, self.delta)
+        return
+
     def calc_cost(self, labels):
         i = np.argmax(labels)
         y = self.output[i]
         if y < 0.00000001:
             return 10000000
-        elif y > 0.999:
+        elif y > 0.99999999:
             return 0
 
         return -1*math.log(y)
@@ -208,24 +218,23 @@ class HiddenLayer(ActiveLayer):
         return
 
     def active(self):
+        # print("[220] [active] %s" % (self,))
         x = self.input_layer.get_output()
         np.dot(x, self.weights, out=self.z)
         self.z += self.bias
 
         self.func.forward(self.z, out=self.output)
-        #if check_toobig(self.output):
+        # if check_toobig(self.output):
         #    print("%s too big" % (self.name,))
+        return
+
+    def calc_input_delta(self, delta):
+        np.dot(self.weights, self.delta, out=delta)
         return
 
     def calc_error(self):
         # 1. calc delta
-        next_delta = self.next_layer.get_delta()
-        next_weights = self.next_layer.get_weights()
-
-        if next_weights is None:
-            np.copyto(self.delta, next_delta)
-        else:
-            np.dot(next_weights, next_delta, out=self.delta)
+        self.next_layer.calc_input_delta(self.delta)
         self.delta *= self.func.backward(self.z, self.output)
 
         # 2. calc delta_weights
