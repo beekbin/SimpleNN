@@ -26,6 +26,7 @@ class EmbeddingLayer(Layer):
         return
 
     def active(self):
+        """the input of this layer is the index of the word."""
         indata = self.input_layer.get_output()
 
         if type(indata) is not int:
@@ -43,9 +44,18 @@ class EmbeddingLayer(Layer):
         self.next_layer.calc_input_delta(self.delta)
         return
 
-    def update_weights(self, lr):
-        if self.lambda2 > 0:
-            self.delta += (self.lambda2 * self.weights)
+    def _clear_delta(self):
+        self.word_index = -1
+        self.delta.fill(0.0)
+        return
 
-        self.weights -= lr * self.delta
+    def update_weights(self, lr):
+        i = self.word_index
+
+        if self.lambda2 > 0:
+            self.delta += (self.lambda2 * self.weights[i])
+
+        self.weights[i] -= lr * self.delta
+
+        self._clear_delta()
         return

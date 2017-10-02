@@ -28,12 +28,6 @@ def tanh_init_weights(d1, d2):
     return tmp
 
 
-def calc_softmax(z):
-    tmp = np.exp(z)
-    total = sum(tmp)
-    return tmp/total
-
-
 class Layer(object):
     def __init__(self, name, size):
         self.name = name
@@ -117,13 +111,13 @@ class ActiveLayer(Layer):
         self.bias = myrandom_vector(self.size)
 
         # forward results
-        self.z = np.zeros(self.size)
-        self.output = np.zeros(self.size)
+        self.z = np.zeros(self.size, dtype=np.float64)
+        self.output = np.zeros(self.size, dtype=np.float64)
 
         # backward results
-        self.delta = np.zeros(self.size)
-        self.delta_weights = np.zeros((fan_in, self.size))
-        self.delta_bias = np.zeros(self.size)
+        self.delta = np.zeros(self.size, dtype=np.float64)
+        self.delta_weights = np.zeros((fan_in, self.size), dtype=np.float64)
+        self.delta_bias = np.zeros(self.size, dtype=np.float64)
         return
 
     def clear_delta(self):

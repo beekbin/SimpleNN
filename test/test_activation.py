@@ -1,12 +1,14 @@
 
 from __future__ import print_function, division
 import numpy as np
+import sys
 
-from activation import SigmoidActiveFunction
-from activation import TanhActiveFunction
-from activation import ReluActiveFunction
-from activation import LeakyReluActiveFunction
-from activation import SoftmaxActiveFunction
+sys.path.insert(0, "../")
+from nn.activation import SigmoidActiveFunction
+from nn.activation import TanhActiveFunction
+from nn.activation import ReluActiveFunction
+from nn.activation import LeakyReluActiveFunction
+from nn.activation import SoftmaxActiveFunction
 
 
 def vector_str(v):
